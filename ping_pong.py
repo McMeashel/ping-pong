@@ -33,32 +33,49 @@ class Player(Gamesprite):
             self.rect.y +=self.speed
 
 class Ball(Gamesprite):
-    def update(self):   
-        keys = key.get_pressed()
+    sp_x = 3
+    sp_y = 3
+    def update(self):
+           
+        self.rect.x += sp_x
+        self.rect.y += sp_y
+        if sprite.collide_rect(pl_1, self) or sprite.collide_rect(pl_2, self):
+            sp_x *= -1
+        if self.rect.y <= 0 or self.rect.y >= 450:
+            sp_y *= -1
 
 
 
 pl_1 = Player('green_line.png', 100, 175, 10, 20, 150)
 pl_2 = Player('blue_line.png', 600, 175, 10, 20, 150)
 
-ball = Ball('ten_ball_1.png', 300, 175, 10, 50, 50)
+ball = Ball('ten_ball_1.png', 300, 175, 4, 50, 50)
 
+font.init()
+font1 = font.Font(None, 35)
+lose = font1.render('YOU LOSE', True, (180, 0, 0))
 
 
 game = True
-
+finish = False
 while game:
     for e in event.get():
         if e.type == QUIT:
             game = False
-    wind.blit(background, (0,0))
+    if !=finish:
+        wind.blit(background, (0,0))
 
-    pl_1.move_1()
-    pl_1.reset()
-    pl_2.move_2()
-    pl_2.reset()
-    ball.update()
-    ball.reset()
+        pl_1.move_1()
+        pl_1.reset()
+        pl_2.move_2()
+        pl_2.reset()
+        
+        ball.update()
+        ball.reset()
+
+    if ball.rect.x > 700 :
+        finish = True
+        wind.blit(lose, (200, 200))
 
 
     display.update()   
